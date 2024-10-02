@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccolin <ccolin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/02 14:33:50 by ccolin            #+#    #+#             */
-/*   Updated: 2024/10/02 23:14:54 by ccolin           ###   ########.fr       */
+/*   Created: 2024/10/02 21:39:52 by ccolin            #+#    #+#             */
+/*   Updated: 2024/10/02 22:59:52 by ccolin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include "libft.h"
-# include "ft_printf.h"
-# include "get_next_line.h"
-# include <stdlib.h>
-# include <stdio.h>
-# include <unistd.h>
+void	cd(char **command)
+{
+	if (command[2])
+	{
+		ft_printf("cd: Too many arguments\n");
+		return ;
+	}
+	if (chdir(command[1]))
+		ft_printf("cd : %s: No such file or directory\n", command[1]);
+}
 
-int		minishell(char *command);
-int		process_commands(char ***commands);
-void	cd(char **command);
-void	pwd(char **command);
-char	***split_commands(char *input);
-void	free_array(char **array);
-
-#endif
+void	pwd(char **command)
+{
+	char	*path;
+	
+	(void)command; // Will need to use command to check for pipe or redirection
+	path = getcwd(NULL, 0);
+	ft_printf("%s\n", path);
+	free(path);
+}
